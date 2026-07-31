@@ -1,17 +1,527 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
 
+const roomLinks = [
+  {
+    label: "About",
+    description: "自己紹介・経歴",
+    href: "/about/",
+    className: "about",
+    image: "/images/home/about.png",
+  },
+  {
+    label: "Projects",
+    description: "開発したツール・プロジェクト",
+    href: "/projects/",
+    className: "projects",
+    image: "/images/home/projects.png",
+  },
+  {
+    label: "Research",
+    description: "研究・解析・発表など",
+    href: "/research/",
+    className: "research",
+    image: "/images/home/research.png",
+  },
+  {
+    label: "Monitoring",
+    description: "ネットワーク観測・解析",
+    href: "/research/monitoring/",
+    className: "monitoring",
+    image: "/images/home/monitoring.png",
+  },
+  {
+    label: "Notes",
+    description: "技術ブログ・メモ",
+    href: "/notes/",
+    className: "notes",
+    image: "/images/home/notes.png",
+  },
+  {
+    label: "Experiments",
+    description: "実験・検証環境",
+    href: "/projects/",
+    className: "experiments",
+    image: "/images/home/experiments.png",
+  },
+  {
+    label: "Contact",
+    description: "連絡先・SNSなど",
+    href: "/contact/",
+    className: "contact",
+    image: "/images/home/contact.png",
+  },
+];
+
+const updates = [
+  {
+    date: "2026.07.18",
+    text: "SONY サマーインターンに参加決定！",
+  },
+  {
+    date: "2026.07.10",
+    text: "NRI サマーインターンに参加決定！",
+  },
+  {
+    date: "2026.06.03",
+    text: "Security Camp 専門コースA 合格",
+  },
+  {
+    date: "2026.05.20",
+    text: "森研究室 プロ研 配属",
+  },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Sae's Lab"
+  description="IoTセキュリティとネットワーク解析に取り組むSaeの個人サイト"
+>
+  <main class="home-page">
+    <Header currentPath={Astro.url.pathname} />
+
+    <section class="intro">
+      <p>IoT Security Researcher</p>
+    </section>
+
+    <section class="room-section" aria-label="サイトメニュー">
+      <img
+        class="room-image"
+        src="/images/home/room.png"
+        alt="机、本棚、ホワイトボード、ネットワーク機器などが置かれた研究室"
+      />
+
+      {
+        roomLinks.map((link) => (
+          <a
+            class={`room-link ${link.className}`}
+            href={link.href}
+            aria-label={`${link.label}：${link.description}`}
+          >
+            <span class="room-cover" aria-hidden="true"></span>
+
+            <span class="room-object" aria-hidden="true">
+              <img src={link.image} alt="" />
+            </span>
+
+            <span class="room-link-text">
+              <span class="room-link-title">{link.label}</span>
+              <span class="room-link-description">
+                {link.description}
+              </span>
+            </span>
+          </a>
+        ))
+      }
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .home-page {
+    width: min(100% - 4rem, 1500px);
+    margin: 0 auto;
+    padding: 2.5rem 0 4rem;
+  }
+
+  .intro {
+    margin-top: 1.5rem;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
+    line-height: 1.5;
+  }
+
+  .intro p {
+    margin: 0.25rem 0;
+  }
+
+  .room-section {
+    --room-background: #FAF5F3;
+
+    position: relative;
+    width: 100%;
+    max-width: 1500px;
+    margin: -1.6rem auto;
+    aspect-ratio: 16 / 9;
+    left: clamp(-24px, -2vw, 0px);
+  }
+
+  .room-image {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .room-link {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    padding: 0;
+    text-align: center;
+    border-radius: 0.5rem;
+    outline: none;
+  }
+
+  .room-object {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    pointer-events: none;
+  }
+
+  .room-cover {
+    position: absolute;
+    z-index: 0;
+    display: block;
+    background: var(--room-background);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+
+  .room-object img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    opacity: 0;
+    transform: scale(1);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      filter 180ms ease;
+  }
+
+  .room-link-text {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .room-link-title {
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1.1rem, 1.8vw, 1.7rem);
+  }
+
+  .room-link-description {
+    margin-top: 0.3rem;
+    font-size: clamp(0.7rem, 1vw, 1rem);
+    white-space: nowrap;
+  }
+
+  /*
+   * room.pngを基準にした配置
+   * 各リンクは、文字と切り抜きPNGをまとめたクリック領域。
+   * top / left / width / height と、room-object の位置を個別に調整できる。
+   */
+
+  .about {
+    top: 15%;
+    left: 22%;
+    width: 20%;
+    height: 45%;
+  }
+
+  .about .room-object {
+    /* room.pngと同じ1672×838キャンバスを重ねる表示領域 */
+    top: -21.2%;
+    left: -110%;
+    width: 500%;
+    height: 198.1%;
+  }
+
+  .about .room-cover {
+    display: none;
+  }
+
+  .room-link-text {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .about .room-link-title,
+  .projects .room-link-title,
+  .research .room-link-title,
+  .monitoring .room-link-title,
+  .notes .room-link-title,
+  .experiments .room-link-title,
+  .contact .room-link-title {
+    font-weight: 300;
+  }
+
+  .projects {
+    top: 13%;
+    left: 44.5%;
+    width: 22%;
+    height: 45%;
+  }
+
+  .projects .room-object {
+    top: 18%;
+    left: 4%;
+    width: 92%;
+    height: 82%;
+  }
+
+  .research {
+    top: 14%;
+    left: 65.5%;
+    width: 20%;
+    height: 48%;
+  }
+
+  .research .room-object {
+    top: 17%;
+    left: 0;
+    width: 100%;
+    height: 83%;
+  }
+
+  .monitoring {
+    top: 61%;
+    left: 9%;
+    width: 20%;
+    height: 27%;
+  }
+
+  .monitoring .room-link-text {
+    top: 52%;
+  }
+
+  .monitoring .room-object {
+    inset: 0;
+  }
+
+  .notes {
+    top: 66%;
+    left: 32%;
+    width: 24%;
+    height: 20%;
+  }
+
+  .notes .room-link-text {
+    top: 56%;
+  }
+
+  .notes .room-object {
+    inset: 0;
+  }
+
+  .experiments {
+    top: 60%;
+    left: 64%;
+    width: 17%;
+    height: 27%;
+  }
+
+  .experiments .room-link-text {
+    top: 38%;
+  }
+
+  .experiments .room-object {
+    inset: 0;
+  }
+
+  .contact {
+    top: 27%;
+    right: 0;
+    width: 11%;
+    height: 57%;
+  }
+
+  .contact .room-link-text {
+    top: 48%;
+  }
+
+  .contact .room-object {
+    inset: 0;
+  }
+
+  .home-bottom {
+    display: grid;
+    grid-template-columns: minmax(280px, 430px) minmax(420px, 1fr);
+    gap: clamp(4rem, 10vw, 10rem);
+    align-items: start;
+    margin-top: -1rem;
+    padding: 0 3rem;
+  }
+
+  .hello-card {
+    position: relative;
+    min-height: 190px;
+    padding: 1.5rem 2rem;
+    border: 1px dashed #8390a0;
+    border-radius: 1rem;
+  }
+
+  .hello-card h2,
+  .updates h2 {
+    margin: 0 0 0.8rem;
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: 1.6rem;
+    font-weight: 400;
+  }
+
+  .hello-card p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 2;
+  }
+
+  .cat {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .updates h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .updates h2 span {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: #1e63c6;
+  }
+
+  .updates ul {
+    display: grid;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .updates li {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 1.5rem;
+  }
+
+  .updates time {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .more-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 1050px) {
+    .home-page {
+      width: min(100% - 2rem, 900px);
+      padding-top: 1.5rem;
+    }
+
+    .intro {
+      margin-bottom: 2rem;
+    }
+
+    .room-section {
+      margin-top: 0;
+      left: 0;
+    }
+
+    .home-bottom {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .intro {
+      display: none;
+    }
+
+    .room-section {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      aspect-ratio: auto;
+      margin-top: 2.5rem;
+    }
+
+    .room-image {
+      display: none;
+    }
+
+    .room-link {
+      position: static;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: auto;
+      min-width: 0;
+      min-height: 145px;
+      padding: 1rem;
+      border: 1px solid #b8bcc3;
+      background: #FAF5F3;
+    }
+
+    .room-object {
+      position: relative;
+      inset: auto;
+      width: 90px;
+      height: 70px;
+      margin-bottom: 0.8rem;
+      display: block;
+      pointer-events: none;
+    }
+
+    .room-cover {
+      display: none;
+    }
+
+    .contact {
+      grid-column: 1 / -1;
+    }
+
+    .room-object img {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+
+    .room-link-text,
+    .monitoring .room-link-text,
+    .notes .room-link-text,
+    .experiments .room-link-text,
+    .contact .room-link-text {
+      position: static;
+      transform: none;
+      white-space: normal;
+    }
+
+    .hello-card {
+      display: none;
+    }
+
+    .updates li {
+      grid-template-columns: 7rem 1fr;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>
