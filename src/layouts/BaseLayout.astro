@@ -1,0 +1,106 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Sae's Lab",
+  description = "IoT Security / Network / System / Security",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <meta name="description" content={description} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Zen+Kurenaido&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Yomogi&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+  --font-handwriting: "Kalam", cursive;
+  --font-japanese: "Yomogi", cursive;
+}
+
+html {
+  background: #faf5f3;
+  color: #101728;
+  font-family: var(--font-japanese);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #faf5f3;
+}
+
+/* 英語のタイトル・見出し・ナビゲーション */
+.site-title,
+.site-subtitle,
+.navigation,
+.english-heading,
+.english-label {
+  font-family: var(--font-handwriting);
+}
+
+/* 日本語の説明文 */
+.japanese-text {
+  font-family: var(--font-japanese);
+}
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: #FAF5F3;
+    color: #101728;
+    font-family: var(--font-japanese);
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: #FAF5F3;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+</style>

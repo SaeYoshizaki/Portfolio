@@ -1,0 +1,122 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = "/" } = Astro.props;
+
+const navigationItems = [
+  {
+    label: "About",
+    href: "/about/",
+  },
+  {
+    label: "Projects",
+    href: "/projects/",
+  },
+  {
+    label: "Research",
+    href: "/research/",
+  },
+  {
+    label: "Notes",
+    href: "/notes/",
+  },
+  {
+    label: "Contact",
+    href: "/contact/",
+  },
+];
+---
+
+<header class="site-header">
+  <a class="site-logo" href="/" aria-label="Sae's Lab ホーム">
+    Sae’s Lab
+  </a>
+
+  <nav class="navigation" aria-label="メインナビゲーション">
+    {
+      navigationItems.map((item) => {
+        const isActive =
+          currentPath === item.href ||
+          currentPath.startsWith(item.href);
+
+        return (
+          <a
+            class:list={["navigation-link", { active: isActive }]}
+            href={item.href}
+            aria-current={isActive ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .site-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-handwriting);
+    font-size: clamp(2rem, 3.2vw, 4rem);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .navigation {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 4rem);
+  }
+
+  .navigation-link {
+    position: relative;
+    padding: 0.5rem 0;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1rem, 1.35vw, 1.5rem);
+  }
+
+  .navigation-link::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: #1e63c6;
+    content: "";
+    opacity: 0;
+    transform: scaleX(0);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
+
+  .navigation-link.active {
+    color: #1e63c6;
+  }
+
+  .navigation-link.active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  @media (max-width: 800px) {
+    .site-header {
+      align-items: flex-start;
+    }
+
+    .navigation {
+      display: none;
+    }
+  }
+</style>
