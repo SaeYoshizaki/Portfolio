@@ -1,0 +1,527 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+
+const interests = [
+  {
+    title: "Network Security",
+    text: "通信の可視化・解析を通して、未知の脅威やリスクを検出する研究をしています。",
+  },
+  {
+    title: "IoT Security",
+    text: "家庭内IoT機器の調査や、安全に使うための仕組みを考えています。",
+  },
+];
+
+const profileItems = [
+  {
+    label: "所属",
+    value: "早稲田大学 基幹理工学部 情報通信学科",
+  },
+  {
+    label: "専門領域",
+    value: "ネットワークセキュリティ ／ IoTセキュリティ",
+  },
+  {
+    label: "研究室",
+    value: "未所属",
+  },
+];
+
+const skills = [
+  "Go", "Python", "C/C++",
+  "TypeScript", "React", "Next.js",
+  "Wireshark", "gopacket",
+  "TCP/IP", "HTTP", "Git", "Docker"
+];
+
+const timeline = [
+  {
+    date: "2024年4月",
+    text: "早稲田大学 基幹理工学部 情報通信学科に入学",
+  },
+  {
+    date: "2024年9月",
+    text: "コンピュータ研究会 WINC 主催ハッカソンに参加",
+  },
+  {
+    date: "2024年12月〜現在",
+    text: "株式会社サードスコープにてインターンシップ",
+  },
+  {
+    date: "2025年9月",
+    text: "コンピュータ研究会 WINC 主催ハッカソンに参加",
+  },
+  {
+    date: "2025年9月",
+    text: "セキュリティ・キャンプミニ山梨に参加",
+  },
+  {
+    date: "2026年8月",
+    text: "セキュリティ・キャンプ全国大会に参加",
+    planned: true,
+  },
+  {
+    date: "2026年8月",
+    text: "NRI「実践型」インターンシップ（IoTセキュリティ）に参加",
+    planned: true,
+  },
+  {
+    date: "2026年9月",
+    text: "Sony 職場密着インターンに参加",
+    planned: true,
+  },
+];
+---
+
+<BaseLayout
+  title="About | Sae Yoshizaki"
+  description="Sae Yoshizakiについて。IoTセキュリティとネットワーク解析を中心に研究・開発に取り組んでいます。"
+>
+  <main class="about-page">
+    <Header currentPath={Astro.url.pathname} />
+
+    <a class="back-link" href="/">← <span>Home</span></a>
+
+    <section class="about-intro" aria-labelledby="about-title">
+      <div class="profile-image-wrap">
+        <img
+          src="/images/about/hero.png"
+          alt="手描きの猫のアイコン"
+          class="profile-image"
+        />
+      </div>
+
+      <div class="intro-copy">
+        <h1 id="about-title">About me</h1>
+        <p class="lead">
+          IoTセキュリティやネットワーク解析を中心に、<br />
+          安全で信頼できるシステムの研究・開発に取り組んでいます。
+        </p>
+
+        <dl class="profile-list">
+          {
+            profileItems.map((item) => (
+              <div>
+                <dt><span aria-hidden="true">{item.icon}</span>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="interests" aria-labelledby="interest-title">
+      <h2 id="interest-title">Research interests</h2>
+      <div class="interest-grid">
+        {
+          interests.map((interest) => (
+            <article class="interest-item">
+              <span class="pin" aria-hidden="true"></span>
+              <h3>{interest.title}</h3>
+              <p>{interest.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">Tools I use</h2>
+      <ul>
+        {skills.map((skill) => <li>{skill}</li>)}
+      </ul>
+    </section>
+
+    <section class="timeline" aria-labelledby="timeline-title">
+      <h2 id="timeline-title">Timeline</h2>
+      <ol class="timeline-list">
+        {
+          timeline.map((item) => (
+            <li class="timeline-item">
+              <time>{item.date}</time>
+              <span class="timeline-marker" aria-hidden="true"></span>
+              <div class="timeline-content">
+                <p>{item.text}</p>
+                {item.planned && <span class="planned-badge">予定</span>}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-page {
+    width: min(100% - 2rem, 1500px);
+    margin: 0.75rem auto;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4.5vw, 4.5rem) 4.5rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-top: clamp(2.5rem, 5vw, 4.25rem);
+    color: #101728;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1.05rem, 1.45vw, 1.45rem);
+  }
+
+  h1, h2, h3, p { margin: 0; }
+
+  h1, h2, h3 {
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-weight: 400;
+  }
+
+  .about-intro {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.32fr) minmax(0, 0.68fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    width: min(100%, 1080px);
+    margin: clamp(1.75rem, 3.5vw, 3rem) auto 0;
+  }
+
+  .profile-image-wrap {
+    position: relative;
+    width: min(100%, 280px);
+    justify-self: center;
+    padding: 0.55rem;
+    border: 2px solid #1e63c6;
+    border-radius: 1.8rem;
+  }
+
+  .profile-image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    border-radius: 1.25rem;
+  }
+
+  .intro-copy h1,
+  .interests h2,
+  .skills h2,
+  .timeline h2 {
+    display: inline-block;
+    padding-bottom: 0.2rem;
+    border-bottom: 3px solid currentColor;
+    font-size: clamp(2rem, 3.2vw, 3.15rem);
+    line-height: 1.05;
+  }
+
+  .lead {
+    margin-top: clamp(1.15rem, 2vw, 1.8rem);
+    color: #101728;
+    font-size: clamp(0.98rem, 1.35vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.9;
+  }
+
+  .profile-list {
+    display: grid;
+    margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+  }
+
+  .profile-list div {
+    display: grid;
+    grid-template-columns: minmax(7.25rem, 0.3fr) 1fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-top: 1px solid #1e63c6;
+  }
+
+  .profile-list div:last-child { border-bottom: 1px solid #1e63c6; }
+
+  .profile-list dt {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    color: #1e63c6;
+    font-weight: 700;
+  }
+
+  .profile-list dt span {
+    color: #101728;
+    font-family: serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+  }
+
+  .profile-list dd {
+    margin: 0;
+    font-size: clamp(0.9rem, 1.2vw, 1.08rem);
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  .interests {
+    width: min(100%, 1120px);
+    margin: clamp(3.75rem, 7vw, 6rem) auto 0;
+  }
+
+  .interest-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 3rem);
+    margin-top: 2.25rem;
+  }
+
+  .interest-item {
+    position: relative;
+    min-height: 180px;
+    padding: clamp(1.7rem, 3vw, 2.4rem) clamp(1.5rem, 3vw, 2.5rem);
+    border: 2px solid #202638;
+    border-radius: 0;
+    background: #fffaf7;
+    transform: none;
+  }
+
+  .interest-item:nth-child(even) {
+    border-radius: 0;
+    transform: none;
+  }
+
+  .interest-item::after {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-top: 2px solid #202638;
+    border-left: 2px solid #202638;
+    border-radius: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 48%,
+      #202638 49%,
+      #202638 51%,
+      #faf5f3 52%
+    );
+    content: "";
+  }
+
+  .interest-item::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 2.6rem;
+    width: 1px;
+    background: #1e63c6;
+    content: "";
+  }
+
+  .pin {
+    position: absolute;
+    z-index: 1;
+    top: -0.86rem;
+    left: 50%;
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 2px solid #202638;
+    border-radius: 50%;
+    background: #1e63c6;
+    box-shadow: 0 0.18rem 0 rgba(16, 23, 40, 0.28);
+    transform: translateX(-50%);
+  }
+
+  .pin::before {
+    position: absolute;
+    top: 0.16rem;
+    left: 0.18rem;
+    width: 0.26rem;
+    height: 0.26rem;
+    border-radius: 50%;
+    background: #dceaff;
+    content: "";
+  }
+
+  .pin::after {
+    position: absolute;
+    top: 0.95rem;
+    left: 50%;
+    width: 1px;
+    height: 0.8rem;
+    background: #202638;
+    content: "";
+    transform: translateX(-50%) rotate(-8deg);
+    transform-origin: top;
+  }
+
+  .interest-item h3,
+  .interest-item p { margin-left: 2.25rem; }
+
+  .interest-item h3 {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.35rem;
+    color: #1e63c6;
+    font-size: clamp(1.45rem, 2.2vw, 2rem);
+    line-height: 1.1;
+  }
+
+  .interest-item h3::after {
+    position: absolute;
+    right: -0.15rem;
+    bottom: 0;
+    left: 0.05rem;
+    height: 2px;
+    border-radius: 50%;
+    background: #1e63c6;
+    content: "";
+    transform: rotate(-1deg);
+  }
+
+  .interest-item p {
+    margin-top: 1.25rem;
+    color: #101728;
+    font-size: clamp(0.88rem, 1.15vw, 1.03rem);
+    font-weight: 700;
+    line-height: 1.85;
+  }
+
+  .skills {
+    display: block;
+    width: min(100%, 1120px);
+    margin: clamp(2.5rem, 4vw, 3.5rem) auto 0;
+  }
+
+  .skills h2 { font-size: clamp(1.8rem, 2.65vw, 2.5rem); }
+
+  .skills ul {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .skills li {
+    min-width: 5.5rem;
+    padding: 0.42rem 0.9rem;
+    border: 2px solid #101728;
+    border-radius: 0.45rem;
+    color: #101728;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1rem, 1.25vw, 1.2rem);
+    text-align: center;
+  }
+
+  .timeline {
+    width: min(100%, 1120px);
+    margin: clamp(4rem, 7vw, 6.5rem) 0 0;
+  }
+
+  .timeline h2 { font-size: clamp(2rem, 3.2vw, 3.15rem); }
+
+  .timeline-list {
+    position: relative;
+    display: grid;
+    gap: 0;
+    margin: clamp(2rem, 3.5vw, 3rem) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline-list::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 25.2%;
+    width: 2px;
+    background: #101728;
+    content: "";
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 23% 4.4% 1fr;
+    align-items: center;
+    min-height: clamp(4.3rem, 6vw, 5.4rem);
+  }
+
+  .timeline-item time {
+    padding-right: 1.75rem;
+    color: #1e63c6;
+    font-size: clamp(0.98rem, 1.45vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1.45;
+    text-align: right;
+  }
+
+  .timeline-marker {
+    z-index: 1;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-left: 50%;
+    border-radius: 50%;
+    background: #1e63c6;
+    box-shadow: 0 0 0 2px #faf5f3;
+    transform: translateX(-50%);
+  }
+
+  .timeline-content {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .timeline-content::before {
+    display: block;
+    flex: 0 0 clamp(2.75rem, 5vw, 4.5rem);
+    height: 2px;
+    background: #101728;
+    content: "";
+  }
+
+  .timeline-content p {
+    color: #101728;
+    font-size: clamp(1rem, 1.45vw, 1.28rem);
+    font-weight: 700;
+    line-height: 1.6;
+  }
+
+  .planned-badge {
+    flex: 0 0 auto;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid #1e63c6;
+    border-radius: 0.35rem;
+    color: #1e63c6;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  @media (max-width: 760px) {
+    .about-intro { grid-template-columns: 1fr; gap: 1.75rem; }
+    .profile-image-wrap { width: min(52vw, 230px); justify-self: start; }
+    .profile-list div { grid-template-columns: 1fr; gap: 0.35rem; }
+    .interest-grid { grid-template-columns: 1fr; }
+    .timeline-list::before { left: 9px; }
+    .timeline-item { grid-template-columns: 1.35rem 1fr; gap: 0.85rem; align-items: start; }
+    .timeline-item time { grid-column: 2; padding: 0; text-align: left; }
+    .timeline-marker { grid-row: 1 / span 2; grid-column: 1; margin: 0; transform: translateX(-1px); }
+    .timeline-content { grid-column: 2; grid-row: 2; align-items: flex-start; }
+    .timeline-content::before { display: none; }
+  }
+
+  @media (max-width: 580px) {
+    .about-page { width: min(100% - 1rem, 1320px); padding-inline: 1.25rem; }
+    .back-link { margin-top: 2.25rem; }
+    .lead br { display: none; }
+    .profile-image-wrap { width: min(58vw, 215px); }
+    .interest-item { min-height: 0; }
+    .interest-item,
+    .interest-item:nth-child(even) { transform: none; }
+    .skills { display: block; }
+    .skills ul { margin-top: 1.25rem; }
+  }
+</style>

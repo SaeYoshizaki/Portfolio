@@ -1,0 +1,186 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+
+const projects = [
+  {
+    title: "Quarant",
+    description:
+      "家庭内ネットワークをパッシブ監視し、IoT機器の通信を解析・リスクを可視化するツール",
+    slug: "quarant",
+  },
+];
+---
+
+<BaseLayout
+  title="Projects | Sae Yoshizaki"
+  description="Sae Yoshizakiで取り組んだプロジェクトの紹介"
+>
+  <main class="projects-page">
+    <Header currentPath={Astro.url.pathname} />
+
+    <a class="back-link" href="/">← <span>Home</span></a>
+
+    <section class="projects-intro" aria-labelledby="projects-title">
+      <h1 id="projects-title">Projects</h1>
+      <p>
+        これまでに取り組んだプロジェクトをまとめています。
+      </p>
+    </section>
+
+    <section class="project-archive" aria-labelledby="archive-title">
+      <div class="archive-heading">
+        <p id="archive-title">Project archive</p>
+      </div>
+
+      <div class="project-list">
+        {
+          projects.map((project) => (
+            <article class="project-record">
+              <div class="project-content">
+                <h2>{project.title}</h2>
+                <p>{project.description}</p>
+              </div>
+
+              <a
+                class="detail-link"
+                href={`/projects/${project.slug}/`}
+                aria-label={`${project.title}の詳細を見る`}
+              >
+                View project <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .projects-page {
+    width: min(100% - 2rem, 1500px);
+    margin: 0.75rem auto;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4.5vw, 4.5rem) 5rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-top: clamp(2.5rem, 5vw, 4.25rem);
+    color: #101728;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1.05rem, 1.45vw, 1.45rem);
+  }
+
+  h1, h2, p { margin: 0; }
+
+  h1, h2 {
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-weight: 400;
+  }
+
+  .projects-intro {
+    width: min(100%, 760px);
+    margin: clamp(2.25rem, 4vw, 3.5rem) 0 0 clamp(0.5rem, 4vw, 4.75rem);
+  }
+
+  .projects-intro h1 {
+    display: inline-block;
+    padding-bottom: 0.2rem;
+    border-bottom: 3px solid currentColor;
+    font-size: clamp(3rem, 5vw, 5rem);
+    line-height: 1;
+  }
+
+  .projects-intro p {
+    margin-top: clamp(1.25rem, 2vw, 1.8rem);
+    color: #101728;
+    font-size: clamp(0.98rem, 1.35vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.9;
+  }
+
+  .project-archive {
+    width: min(100%, 1120px);
+    margin: clamp(4rem, 7vw, 6.5rem) auto 0;
+  }
+
+  .archive-heading {
+    display: flex;
+    align-items: baseline;
+    padding-bottom: 0.9rem;
+    border-bottom: 2px solid #101728;
+  }
+
+  .archive-heading p {
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+  }
+
+  .project-list { display: grid; }
+
+  .project-record {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: center;
+    padding: clamp(1.75rem, 3vw, 2.75rem) clamp(0.5rem, 1.1vw, 1rem);
+    border-bottom: 2px solid #101728;
+  }
+
+  .project-content h2 {
+    color: #101728;
+    font-size: clamp(2rem, 3.15vw, 3rem);
+    line-height: 1;
+  }
+
+  .project-content p {
+    margin-top: 0.9rem;
+    color: #101728;
+    font-size: clamp(0.92rem, 1.2vw, 1.08rem);
+    font-weight: 700;
+    line-height: 1.8;
+  }
+
+  .detail-link {
+    display: inline-flex;
+    gap: 0.65rem;
+    align-items: center;
+    color: #101728;
+    font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .detail-link span {
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: 1.65rem;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 180ms ease;
+  }
+
+  .detail-link:hover span,
+  .detail-link:focus-visible span { transform: translateX(0.25rem); }
+
+  @media (max-width: 760px) {
+    .projects-intro { margin-left: 0; }
+    .project-record {
+      grid-template-columns: 1fr;
+      gap: 1rem 1.5rem;
+    }
+    .detail-link { justify-self: start; }
+  }
+
+  @media (max-width: 540px) {
+    .projects-page { width: min(100% - 1rem, 1320px); padding-inline: 1.25rem; }
+    .back-link { margin-top: 2.25rem; }
+    .projects-intro p br { display: none; }
+    .project-archive { margin-top: 3.5rem; }
+    .project-record { grid-template-columns: 1fr; gap: 1rem; }
+  }
+</style>

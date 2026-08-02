@@ -1,0 +1,123 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+
+const contacts = [
+  { label: "Email", value: "yoshizakisae@gmail.com", href: "mailto:yoshizakisae@gmail.com", external: false },
+  { label: "GitHub", value: "SaeYoshizaki", href: "https://github.com/SaeYoshizaki", external: true },
+  { label: "X (Twitter)", value: "@u408a", href: "https://x.com/u408a", external: true },
+];
+---
+
+<BaseLayout title="Contact | Sae Yoshizaki" description="Sae Yoshizakiへのお問い合わせ">
+  <main class="contact-page">
+    <Header currentPath={Astro.url.pathname} />
+
+    <a class="back-link" href="/">← <span>Home</span></a>
+
+    <section class="contact-intro" aria-labelledby="contact-title">
+      <h1 id="contact-title">Contact</h1>
+      <p>お仕事のご依頼・ご相談・ご質問など、お気軽にご連絡ください。</p>
+    </section>
+
+    <section class="contact-list-section" aria-label="連絡先">
+      <ul class="contact-list">
+        {
+          contacts.map((contact) => (
+            <li>
+              <a
+                href={contact.href}
+                target={contact.external ? "_blank" : undefined}
+                rel={contact.external ? "noreferrer" : undefined}
+                aria-label={`${contact.label}: ${contact.value}`}
+              >
+                <span class="contact-detail">
+                  <strong>{contact.label}</strong>
+                  <span>{contact.value}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .contact-page {
+    width: min(100% - 2rem, 1500px);
+    min-height: 100vh;
+    margin: 0.75rem auto;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4.5vw, 4.5rem) 6rem;
+  }
+
+  h1, p { margin: 0; }
+
+  .back-link {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-top: clamp(2.5rem, 5vw, 4.25rem);
+    color: #101728;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1.05rem, 1.45vw, 1.45rem);
+  }
+
+  .contact-intro {
+    margin: clamp(2.25rem, 4vw, 3.5rem) 0 0 clamp(0.5rem, 4vw, 4.75rem);
+  }
+
+  h1 {
+    display: inline-block;
+    padding-bottom: 0.2rem;
+    border-bottom: 3px solid #1e63c6;
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .contact-intro p {
+    margin-top: clamp(1.25rem, 2vw, 1.8rem);
+    color: #101728;
+    font-size: clamp(0.98rem, 1.35vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.8;
+  }
+
+  .contact-list-section {
+    width: min(100% - clamp(1rem, 8vw, 9.5rem), 1000px);
+    margin: clamp(4rem, 8vw, 7rem) 0 0 clamp(0.5rem, 7vw, 6rem);
+  }
+
+  .contact-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 4rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-list a {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    min-height: 0;
+    color: #101728;
+  }
+
+  .contact-detail { display: grid; gap: 0.35rem; min-width: 0; }
+  .contact-detail strong { color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(1.65rem, 2.5vw, 2.25rem); font-weight: 400; line-height: 1.15; }
+  .contact-detail > span { overflow-wrap: anywhere; font-size: clamp(0.95rem, 1.3vw, 1.1rem); line-height: 1.5; }
+
+  @media (max-width: 640px) {
+    .contact-page { width: min(100% - 1rem, 1500px); padding-inline: 1rem; }
+    .contact-intro { margin-left: 0; }
+    .contact-list-section { width: 100%; margin-left: 0; }
+    .contact-list { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-list a { grid-template-columns: 1fr; gap: 0.9rem; align-items: center; }
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+
+export function getStaticPaths() {
+  return [
+    ["raspberry-pi-ids", "Raspberry Pi で簡易 IDS を作ってみた"], ["wireshark-basics", "Wireshark の使い方メモ"], ["mqtt-overview", "MQTT の仕組みを整理してみた"], ["security-camp", "セキュリティ・キャンプに参加して"], ["archive", "Notes Archive"],
+  ].map(([slug, title]) => ({ params: { slug }, props: { title } }));
+}
+
+const { title } = Astro.props;
+---
+
+<BaseLayout title={`${title} | Sae Yoshizaki`} description={`${title}の詳細ページ`}>
+  <main class="preparing-page"><Header currentPath={Astro.url.pathname} /><section class="notice" aria-labelledby="page-title"><p>NOTE DETAIL</p><h1 id="page-title">{title}</h1><div class="note">ただいま準備中です。<br />公開まで、もうしばらくお待ちください。</div><div class="links"><a href="/notes/">← Notes に戻る</a><a href="/">← Home に戻る</a></div></section></main>
+</BaseLayout>
+
+<style>
+  .preparing-page { width: min(100% - 4rem, 1500px); min-height: 100vh; margin: 0 auto; padding: 2.5rem 0 4rem; } .notice { display: grid; justify-items: center; width: min(100%, 720px); margin: clamp(7rem, 16vw, 13rem) auto 0; padding: 2rem; text-align: center; } .notice > p { margin: 0; color: #1766c2; font-family: var(--font-handwriting); font-size: clamp(1.1rem, 2vw, 1.6rem); letter-spacing: 0.08em; } h1 { margin: 0.6rem 0 2.5rem; color: #1766c2; font-family: var(--font-handwriting); font-size: clamp(2.8rem, 5.5vw, 5rem); font-weight: 400; line-height: 1.1; } .note { width: 100%; padding: clamp(2rem, 5vw, 3.5rem) 1.5rem; border: 2px solid #aaa; background: #fffdfa; font-size: clamp(1.05rem, 1.7vw, 1.45rem); font-weight: 700; line-height: 1.9; } .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 2rem; margin-top: 2.25rem; } .links a { padding-bottom: 0.2rem; border-bottom: 2px solid #1766c2; color: #1766c2; font-family: var(--font-handwriting); font-size: clamp(1.1rem, 1.7vw, 1.35rem); } @media (max-width: 800px) { .preparing-page { width: min(100% - 2rem, 1500px); } }
+</style>

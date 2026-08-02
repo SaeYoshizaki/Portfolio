@@ -1,0 +1,188 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+
+export function getStaticPaths() {
+  return [{ params: { slug: "quarant" } }];
+}
+
+const technologies = ["Go", "gopacket", "OpenWrt", "PCAP"];
+---
+
+<BaseLayout
+  title="Quarant | Sae Yoshizaki"
+  description="家庭内IoT機器の通信をパッシブに観測し、リスクの兆候と限界を整理する個人開発プロジェクト"
+>
+  <main class="project-page">
+    <Header currentPath={Astro.url.pathname} />
+
+    <article class="project-article">
+      <a class="back-link" href="/projects/">← <span>Projects</span></a>
+
+      <header class="article-header">
+        <h1>Quarant</h1>
+        <p class="summary">
+          家庭内IoT機器の通信をパッシブに観測し、リスクの兆候と限界を整理する。
+        </p>
+        <p class="project-type">個人開発</p>
+      </header>
+
+      <section aria-labelledby="overview-title">
+        <h2 id="overview-title">研究概要</h2>
+        <p>
+          IoT機器の通信をパッシブに観測することで、セキュリティリスクをどこまで把握できるのか、またその限界はどこにあるのかをテーマに、個人開発として取り組んでいます。
+        </p>
+        <p>
+          監視カメラやスマート家電などのIoT機器は家庭でも広く使われていますが、利用者が通信内容や設定の安全性を自分で確認することは容易ではありません。そこで、機器に直接ログインしたり攻撃的なスキャンを行ったりせず、ネットワーク上を流れる通信を観測するアプローチに着目しました。
+        </p>
+      </section>
+
+      <section aria-labelledby="work-title">
+        <h2 id="work-title">取り組んでいること</h2>
+        <p>
+          現在はGoを用いて、家庭内IoT機器の通信を監視し、リスクの兆候を検出・可視化するツールを開発しています。
+        </p>
+        <ul>
+          <li>HTTP、TLS、DNSなどの通信情報を観測する</li>
+          <li>平文通信や認証情報の露出、弱いTLS設定などの兆候を整理する</li>
+          <li>外部サーバとの通信先を把握し、利用者が状況を確認できる形で可視化する</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="limits-title">
+        <h2 id="limits-title">観測できること・限界</h2>
+        <div class="callout">
+          <p>
+            通信解析では、「観測できた事実」と「そこから推測できること」、さらに「観測だけでは判断できない限界」を分けて考えることを大切にしています。
+          </p>
+          <p>
+            たとえば、暗号化された通信の本文や機器内部の設定、脆弱性が実際に悪用可能かどうかは、通信の観測だけでは断定できません。こうした限界も含めて提示することで、検出したリスクを適切な対策につなげられる形を目指しています。
+          </p>
+        </div>
+      </section>
+
+      <section class="tech-section" aria-labelledby="tech-title">
+        <h2 id="tech-title">使用技術</h2>
+        <ul class="technology-list">
+          {technologies.map((technology) => <li>{technology}</li>)}
+        </ul>
+      </section>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .project-page {
+    width: min(100% - 2rem, 1500px);
+    margin: 0.75rem auto;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4.5vw, 4.5rem) 7rem;
+  }
+
+  .project-article {
+    width: min(100%, 760px);
+    margin: 0 auto;
+  }
+
+  h1, h2, p { margin: 0; }
+
+  .back-link {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-top: clamp(2.5rem, 5vw, 4.25rem);
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+  }
+
+  .article-header {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
+    border-bottom: 2px solid #101728;
+  }
+
+  h1 {
+    display: inline-block;
+    padding-bottom: 0.18rem;
+    border-bottom: 3px solid #1e63c6;
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: clamp(3.25rem, 7vw, 6rem);
+    font-weight: 400;
+    line-height: 0.95;
+  }
+
+  .summary {
+    margin-top: clamp(1.5rem, 3vw, 2.1rem);
+    color: #101728;
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1.8;
+  }
+
+  .project-type {
+    margin-top: 0.9rem;
+    color: #6c7180;
+    font-size: 0.95rem;
+  }
+
+  section { margin-top: clamp(2.8rem, 5vw, 4.25rem); }
+
+  h2 {
+    margin-bottom: 1.1rem;
+    color: #1e63c6;
+    font-size: clamp(1.35rem, 2.3vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  section > p, .callout p, section li {
+    color: #101728;
+    font-size: clamp(0.98rem, 1.35vw, 1.1rem);
+    line-height: 2;
+  }
+
+  section > p + p { margin-top: 1.25rem; }
+
+  section > ul {
+    display: grid;
+    gap: 0.65rem;
+    margin: 1.25rem 0 0;
+    padding-left: 1.35rem;
+  }
+
+  section > ul li::marker { color: #1e63c6; }
+
+  .callout {
+    padding: clamp(1.2rem, 2.5vw, 1.75rem);
+    border-left: 3px solid #1e63c6;
+    background: rgba(16, 23, 40, 0.035);
+  }
+
+  .callout p + p { margin-top: 1rem; }
+
+  .tech-section { padding-bottom: 1.25rem; border-bottom: 2px solid #101728; }
+
+  .technology-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .technology-list li {
+    padding: 0.3rem 0.9rem;
+    border: 2px solid #101728;
+    border-radius: 0.3rem;
+    font-family: var(--font-handwriting);
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 640px) {
+    .project-page { width: min(100% - 1rem, 1500px); padding-inline: 1rem; }
+    .back-link { margin-top: 2rem; }
+    .article-header { margin-top: 2.25rem; }
+  }
+</style>

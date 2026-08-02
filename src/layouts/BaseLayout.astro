@@ -5,7 +5,7 @@ interface Props {
 }
 
 const {
-  title = "Sae's Lab",
+  title = "Sae Yoshizaki",
   description = "IoT Security / Network / System / Security",
 } = Astro.props;
 ---
@@ -29,6 +29,10 @@ const {
       href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Yomogi&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Allura&display=swap"
+      rel="stylesheet"
+    />
 
     <title>{title}</title>
   </head>
@@ -41,6 +45,7 @@ const {
 <style is:global>
   :root {
   --font-handwriting: "Kalam", cursive;
+  --font-logo: "Allura", cursive;
   --font-japanese: "Yomogi", cursive;
 }
 
