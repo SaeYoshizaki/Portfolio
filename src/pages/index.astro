@@ -41,7 +41,7 @@ const roomLinks = [
 >
   <main class="home-page">
     <header class="home-intro">
-      <h1>Sae Yoshizaki's Portfolio</h1>
+      <h1>Sae Yoshizaki<span class="possessive-mark">'</span>s Portfolio</h1>
       <p>気になるところからのぞいてみてね。</p>
     </header>
 
@@ -173,6 +173,12 @@ const roomLinks = [
     font-size: clamp(1.4rem, 2.2vw, 2.3rem);
     font-weight: 300;
     line-height: 1.1;
+  }
+
+  .possessive-mark {
+    display: inline-block;
+    margin-left: 0.12em;
+    margin-right: 0.03em;
   }
 
   .home-intro p {
