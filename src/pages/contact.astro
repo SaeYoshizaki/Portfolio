@@ -31,6 +31,24 @@ const contacts = [
                 rel={contact.external ? "noreferrer" : undefined}
                 aria-label={`${contact.label}: ${contact.value}`}
               >
+                <span class={`contact-icon contact-icon--${contact.label.toLowerCase().replace(" (twitter)", "")}`} aria-hidden="true">
+                  {
+                    contact.label === "Email" && (
+                      <svg viewBox="0 0 56 42" role="presentation">
+                        <rect x="3" y="3" width="50" height="36" rx="2" />
+                        <path d="m5 7 23 18L51 7" />
+                      </svg>
+                    )
+                  }
+                  {
+                    contact.label === "GitHub" && (
+                      <svg viewBox="0 0 24 24" role="presentation">
+                        <path d="M12 3a9 9 0 0 0-2.85 17.54c.45.08.6-.19.6-.42v-1.6c-2.45.53-2.97-1.04-2.97-1.04-.4-1.02-.98-1.29-.98-1.29-.8-.55.06-.54.06-.54.89.06 1.35.91 1.35.91.79 1.35 2.07.96 2.58.73.08-.57.31-.96.56-1.18-1.96-.22-4.02-.98-4.02-4.37 0-.97.34-1.75.91-2.37-.09-.22-.4-1.12.09-2.33 0 0 .74-.24 2.42.9A8.36 8.36 0 0 1 12 7.3c.74 0 1.49.1 2.19.3 1.68-1.14 2.42-.9 2.42-.9.49 1.21.18 2.11.09 2.33.57.62.91 1.4.91 2.37 0 3.4-2.07 4.15-4.04 4.37.32.28.6.82.6 1.65v2.45c0 .23.16.5.61.42A9 9 0 0 0 12 3Z" />
+                      </svg>
+                    )
+                  }
+                  {contact.label === "X (Twitter)" && <span class="x-mark">𝕏</span>}
+                </span>
                 <span class="contact-detail">
                   <strong>{contact.label}</strong>
                   <span>{contact.value}</span>
@@ -73,7 +91,7 @@ const contacts = [
     border-bottom: 3px solid #1e63c6;
     color: #1e63c6;
     font-family: var(--font-handwriting);
-    font-size: clamp(3rem, 5vw, 5rem);
+    font-size: clamp(2.4rem, 3.4vw, 3.3rem);
     font-weight: 400;
     line-height: 1;
   }
@@ -87,37 +105,141 @@ const contacts = [
   }
 
   .contact-list-section {
-    width: min(100% - clamp(1rem, 8vw, 9.5rem), 1000px);
-    margin: clamp(4rem, 8vw, 7rem) 0 0 clamp(0.5rem, 7vw, 6rem);
+    position: relative;
+    width: min(100% - clamp(1rem, 4vw, 4rem), 1120px);
+    margin: clamp(4rem, 7vw, 6rem) auto 0;
   }
 
   .contact-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1.5rem, 4vw, 4rem);
+    gap: clamp(1.25rem, 3vw, 2.75rem);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .contact-list a {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.85rem;
-    align-items: start;
+    position: relative;
+    display: flex;
+    aspect-ratio: 1;
     min-height: 0;
+    padding: clamp(1.6rem, 3vw, 2.6rem);
+    border: 2px solid #101728;
+    background: #fffdfc;
+    box-shadow: 0.5rem 0.55rem 0 #b8d1f7;
     color: #101728;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transform: rotate(-2deg);
+    transition: transform 180ms ease, box-shadow 180ms ease;
   }
 
-  .contact-detail { display: grid; gap: 0.35rem; min-width: 0; }
-  .contact-detail strong { color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(1.65rem, 2.5vw, 2.25rem); font-weight: 400; line-height: 1.15; }
-  .contact-detail > span { overflow-wrap: anywhere; font-size: clamp(0.95rem, 1.3vw, 1.1rem); line-height: 1.5; }
+  .contact-list li:nth-child(2) a { transform: rotate(0.5deg); }
+  .contact-list li:nth-child(3) a { transform: rotate(2deg); }
+
+  .contact-list a::before {
+    position: absolute;
+    z-index: 1;
+    top: -0.8rem;
+    left: 50%;
+    width: clamp(4.2rem, 6vw, 5.8rem);
+    height: 1.25rem;
+    border: 1px solid rgba(16, 23, 40, 0.28);
+    background: repeating-linear-gradient(
+      135deg,
+      #4c88dc 0 2px,
+      #75a6e8 2px 4px
+    );
+    box-shadow: 0 0.12rem 0 rgba(16, 23, 40, 0.12);
+    clip-path: polygon(
+      0 0,
+      96% 0,
+      100% 12%,
+      96% 24%,
+      100% 36%,
+      96% 48%,
+      100% 60%,
+      96% 72%,
+      100% 84%,
+      96% 100%,
+      0 100%,
+      4% 88%,
+      0 76%,
+      4% 64%,
+      0 52%,
+      4% 40%,
+      0 28%,
+      4% 16%
+    );
+    content: "";
+    opacity: 0.92;
+    transform: translateX(-50%) rotate(-4deg);
+  }
+
+  .contact-list li:first-child a::before {
+    background: repeating-linear-gradient(
+      135deg,
+      #6b9ee1 0 2px,
+      #92b7ec 2px 4px
+    );
+    transform: translateX(-50%) rotate(3deg);
+  }
+
+  .contact-list li:nth-child(3) a::before {
+    background: repeating-linear-gradient(
+      135deg,
+      #3f7fd8 0 2px,
+      #6d9fdf 2px 4px
+    );
+    transform: translateX(-50%) rotate(2deg);
+  }
+
+  .contact-list a:hover,
+  .contact-list a:focus-visible { box-shadow: 0.7rem 0.8rem 0 #8eb9f5; transform: translate(-0.15rem, -0.25rem) rotate(-1deg); }
+  .contact-list li:nth-child(2) a:hover,
+  .contact-list li:nth-child(2) a:focus-visible { transform: translate(-0.15rem, -0.25rem) rotate(0deg); }
+  .contact-list li:nth-child(3) a:hover,
+  .contact-list li:nth-child(3) a:focus-visible { transform: translate(-0.15rem, -0.25rem) rotate(1deg); }
+
+  .contact-icon {
+    display: grid;
+    width: clamp(3rem, 4vw, 4.1rem);
+    height: clamp(3rem, 4vw, 4.1rem);
+    margin-bottom: clamp(1.1rem, 2vw, 1.6rem);
+    color: #101728;
+    place-items: center;
+  }
+
+  .contact-icon svg {
+    width: 100%;
+    overflow: visible;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+  }
+
+  .contact-icon--github svg {
+    stroke-width: 0.60;
+    transform: scale(1.4);
+  }
+
+  .x-mark { font-family: Arial, sans-serif; font-size: clamp(3rem, 4vw, 4.25rem); line-height: 1; }
+
+  .contact-detail { display: grid; gap: 0.55rem; min-width: 0; }
+  .contact-detail strong { display: inline-block; color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(1.65rem, 2.5vw, 2.25rem); font-weight: 400; line-height: 1.15; }
+  .contact-detail strong::after { display: block; width: 82%; height: 2px; margin: 0.2rem auto 0; background: currentColor; content: ""; transform: rotate(-1deg); }
+  .contact-detail > span { overflow-wrap: anywhere; font-size: clamp(0.9rem, 1.15vw, 1.05rem); line-height: 1.5; }
 
   @media (max-width: 640px) {
     .contact-page { width: min(100% - 1rem, 1500px); padding-inline: 1rem; }
     .contact-intro { margin-left: 0; }
     .contact-list-section { width: 100%; margin-left: 0; }
     .contact-list { grid-template-columns: 1fr; gap: 2rem; }
-    .contact-list a { grid-template-columns: 1fr; gap: 0.9rem; align-items: center; }
+    .contact-list a { aspect-ratio: auto; min-height: 14.5rem; }
   }
 </style>

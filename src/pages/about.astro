@@ -19,10 +19,6 @@ const profileItems = [
     value: "早稲田大学 基幹理工学部 情報通信学科",
   },
   {
-    label: "専門領域",
-    value: "ネットワークセキュリティ ／ IoTセキュリティ",
-  },
-  {
     label: "研究室",
     value: "未所属",
   },
@@ -93,7 +89,7 @@ const timeline = [
       </div>
 
       <div class="intro-copy">
-        <h1 id="about-title">About me</h1>
+        <h1 id="about-title">Sae Yoshizaki</h1>
         <p class="lead">
           IoTセキュリティやネットワーク解析を中心に、<br />
           安全で信頼できるシステムの研究・開発に取り組んでいます。
@@ -212,6 +208,11 @@ const timeline = [
     border-bottom: 3px solid currentColor;
     font-size: clamp(2rem, 3.2vw, 3.15rem);
     line-height: 1.05;
+  }
+
+  .intro-copy h1 {
+    padding-bottom: 0;
+    border-bottom: 0;
   }
 
   .lead {
@@ -391,7 +392,9 @@ const timeline = [
     margin: clamp(2.5rem, 4vw, 3.5rem) auto 0;
   }
 
-  .skills h2 { font-size: clamp(1.8rem, 2.65vw, 2.5rem); }
+  .interests h2,
+  .skills h2,
+  .timeline h2 { font-size: clamp(1.8rem, 2.65vw, 2.5rem); }
 
   .skills ul {
     display: flex;
@@ -416,10 +419,8 @@ const timeline = [
 
   .timeline {
     width: min(100%, 1120px);
-    margin: clamp(4rem, 7vw, 6.5rem) 0 0;
+    margin: clamp(4rem, 7vw, 6.5rem) auto 0;
   }
-
-  .timeline h2 { font-size: clamp(2rem, 3.2vw, 3.15rem); }
 
   .timeline-list {
     position: relative;

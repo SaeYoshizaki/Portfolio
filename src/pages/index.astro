@@ -40,28 +40,68 @@ const roomLinks = [
   description="IoTセキュリティとネットワーク解析に取り組むSaeの個人サイト"
 >
   <main class="home-page">
-    <header class="home-header">
-      <a class="home-logo" href="/" aria-label="Sae Yoshizaki ホーム">Sae Yoshizaki</a>
+    <header class="home-intro">
+      <h1>Sae Yoshizaki's Portfolio</h1>
+      <p>気になるところからのぞいてみてね。</p>
     </header>
 
     <section class="room-menu" aria-label="部屋を探索する">
+      <div class="room-focus" aria-live="polite">
+        <p class="room-focus-title"></p>
+        <p class="room-focus-description"></p>
+        <span class="room-focus-arrow" aria-hidden="true">→</span>
+      </div>
+
       <img
         class="room-image"
-        src="/images/home/room.png"
+        src="/images/home/room-without-lamp.png"
         alt="机、本棚、ホワイトボード、ネットワーク機器などが置かれた研究室"
       />
+
+      <svg
+        class="room-object-highlights"
+        viewBox="0 0 1672 941"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+				<g class="room-object room-object--about">
+					<path d="M101 146 238 201 238 503 101 503Z" />
+					<path d="M101 503 238 503 228 522 101 522Z" />
+				</g>
+        <path class="room-object room-object--projects" d="M475 291 735 291 748 305 748 657 735 670 475 660Z" />
+        <g class="room-object room-object--research">
+          <rect x="937" y="324" width="231" height="211" rx="14" />
+          <path d="M932 545H1174V552H932Z" />
+          <path d="M925 404H937V638H925Z" />
+          <path d="M1169 404H1180V638H1169Z" />
+          <path class="room-object-line room-object-line--left" d="M930 637 907 652" />
+          <circle cx="914" cy="658" r="5" />
+          <circle cx="941" cy="633" r="5" />
+          <path class="room-object-line" d="M1176 637 1192 648 1188 656 M1176 637 1160 625" />
+          <circle cx="1160" cy="634" r="7" />
+          <circle cx="1188" cy="656" r="9" />
+        </g>
+				<path class="room-object room-object--notes" d="M635 873 698 744 Q770 724 844 742 Q918 724 980 744 L1045 873 Q944 873 844 881 Q748 873 635 873Z" />
+        <g class="room-object room-object--contact">
+          <path d="M1460 180 1615 208 1627 685 1459 714Z" />
+          <path d="M1615 220 1628 215 1628 698 1627 685 1615 680Z" />
+          <path d="M1627 685 1633 698 1628 698Z" />
+          <path d="M1560 192 1633 171 1615 208Z" />
+          <path d="M1615 208 1633 171 1633 220Z" />
+          <path d="M1560 192 1633 171 1633 220 1615 220Z" />
+          <path d="M1615 208 1633 171 1633 721 1627 685Z" />
+        </g>
+      </svg>
 
       <nav class="room-links" aria-label="サイトメニュー">
         {
           roomLinks.map((link) => (
-            <a class={`room-link ${link.className}`} href={link.href}>
-              <span class="hotspot" aria-hidden="true"></span>
-              <span class="guide-card">
-                <span class="guide-title">{link.title}</span>
-                <span class="guide-description">{link.description}</span>
-                <span class="guide-arrow" aria-hidden="true">→</span>
-              </span>
-            </a>
+            <a
+              class={`room-link ${link.className}`}
+              href={link.href}
+              data-title={link.title}
+              data-description={link.description}
+            ></a>
           ))
         }
       </nav>
@@ -85,13 +125,12 @@ const roomLinks = [
 
 <style>
   .home-page {
+    position: relative;
     width: min(100% - 4rem, 1500px);
     margin: 0 auto;
     padding: 2.5rem 0 4rem;
   }
 
-  .home-header { display: flex; align-items: center; justify-content: space-between; }
-  .home-logo { color: #101728; font-family: var(--font-logo); font-size: clamp(2rem, 2.5vw, 3.2rem); font-weight: 400; letter-spacing: 0.01em; line-height: 1; }
   .room-menu {
     position: relative;
     width: 100%;
@@ -109,7 +148,104 @@ const roomLinks = [
     user-select: none;
   }
 
+  .home-intro {
+    position: absolute;
+    top: clamp(4.5rem, 9vw, 8rem);
+    left: 50%;
+    z-index: 4;
+    width: min(90%, 43rem);
+    color: #1e63c6;
+    text-align: center;
+    transform: translateX(-50%);
+    transition: opacity 180ms ease;
+  }
+
+  .home-intro.is-hidden { opacity: 0; }
+
+  .home-intro h1,
+  .home-intro p { margin: 0; }
+
+  .home-intro h1 {
+    display: inline-block;
+    padding-bottom: 0.35rem;
+    border-bottom: 2px solid currentColor;
+    font-family: var(--font-handwriting);
+    font-size: clamp(1.4rem, 2.2vw, 2.3rem);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  .home-intro p {
+    margin-top: 0.85rem;
+    color: #1e63c6;
+    font-family: var(--font-japanese);
+    font-size: clamp(0.72rem, 1.05vw, 1.02rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .room-focus {
+    position: absolute;
+    top: clamp(1.75rem, calc(6vw - 1rem), 4.5rem);
+    left: 50%;
+    z-index: 4;
+    display: grid;
+    justify-items: center;
+    min-width: min(90%, 25rem);
+    gap: 0.35rem;
+    color: #101728;
+    text-align: center;
+    opacity: 0;
+    transform: translateX(-50%);
+    transition: opacity 180ms ease;
+  }
+
+  .room-focus-title,
+  .room-focus-description {
+    margin: 0;
+    transition: color 180ms ease, opacity 180ms ease;
+  }
+
+  .room-focus-title {
+    font-family: var(--font-japanese);
+    font-size: clamp(0.95rem, 1.35vw, 1.35rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .room-focus-description { min-height: 1.2em; font-family: var(--font-japanese); font-size: clamp(0.85rem, 1.15vw, 1.1rem); font-weight: 700; }
+  .room-focus-arrow { margin-top: 0.2rem; color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(1.25rem, 1.7vw, 1.65rem); line-height: 1; opacity: 0; transform: translateY(-0.2rem); transition: opacity 180ms ease, transform 180ms ease; }
+  .room-focus.is-active .room-focus-title { color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(1.45rem, 2.2vw, 2.3rem); font-weight: 300; letter-spacing: 0.01em; line-height: 1; }
+  .room-focus.is-active { opacity: 1; }
+  .room-focus.is-active .room-focus-arrow { opacity: 1; transform: translateY(0); }
+
   .room-links { position: absolute; inset: 0; }
+
+  .room-object-highlights {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .room-object {
+    fill: #77a6ff;
+    mix-blend-mode: multiply;
+    opacity: 0;
+    transition: opacity 180ms ease;
+  }
+
+  .room-object-line {
+    fill: none;
+    stroke: #77a6ff;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 12;
+  }
+
+  .room-object-line--left { stroke-width: 7; }
 
   .room-link {
     position: absolute;
@@ -118,55 +254,7 @@ const roomLinks = [
     outline: none;
   }
 
-  .hotspot {
-    position: relative;
-    z-index: 2;
-    width: clamp(0.55rem, 0.75vw, 0.72rem);
-    aspect-ratio: 1;
-    border: 2px solid #faf5f3;
-    border-radius: 50%;
-    background: #1e63c6;
-    box-shadow: 0 0 0 0.2rem rgb(250 245 243 / 90%);
-    transition: transform 200ms ease, box-shadow 200ms ease;
-  }
-
-  .guide-card {
-    position: absolute;
-    bottom: calc(50% + 0.95rem);
-    left: 50%;
-    z-index: 3;
-    display: grid;
-    gap: 0.35rem;
-    min-width: clamp(10rem, 13vw, 13rem);
-    padding: 1rem 1.15rem 1.25rem;
-    border-radius: 0.7rem;
-    background: rgb(255 254 253 / 97%);
-    box-shadow: 0 0.5rem 1.25rem rgb(16 23 40 / 14%);
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-50%) translateY(0.4rem) scale(0.92);
-    transform-origin: bottom center;
-    transition: opacity 200ms ease, transform 200ms ease;
-  }
-
-  .guide-card::after {
-    position: absolute;
-    right: 1.15rem;
-    bottom: 0.55rem;
-    left: 1.15rem;
-    height: 2px;
-    background: #77a6ff;
-    content: "";
-  }
-
-  .guide-title { color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(1.25rem, 1.8vw, 1.7rem); line-height: 1; }
-  .guide-description { font-family: var(--font-japanese); font-size: clamp(0.68rem, 0.82vw, 0.82rem); font-weight: 700; white-space: nowrap; }
-  .guide-arrow { position: absolute; right: 0.75rem; bottom: 0.8rem; z-index: 1; color: #1e63c6; font-family: var(--font-handwriting); font-size: 1.5rem; line-height: 1; }
-
-  .room-link:hover .hotspot,
-  .room-link:focus-visible .hotspot { transform: scale(1.18); box-shadow: 0 0 0 0.32rem rgb(30 99 198 / 18%); }
-  .room-link:hover .guide-card,
-  .room-link:focus-visible .guide-card { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  .room-link:focus-visible { outline: 2px solid #1e63c6; outline-offset: 0.25rem; }
 
   /* ホットスポットの配置：新しい room.png に合わせた値です。必要に応じて調整してください。 */
   .room-link--about { top: 31%; left: 7%; width: 16%; height: 36%; }
@@ -175,17 +263,69 @@ const roomLinks = [
   .room-link--notes { top: 73%; left: 40.5%; width: 20%; height: 22%; }
   .room-link--contact { top: 27%; left: 86%; width: 13%; height: 48%; }
 
+  .room-menu:has(.room-link--about:hover) .room-object--about,
+  .room-menu:has(.room-link--about:focus-visible) .room-object--about,
+  .room-menu:has(.room-link--projects:hover) .room-object--projects,
+  .room-menu:has(.room-link--projects:focus-visible) .room-object--projects,
+  .room-menu:has(.room-link--research:hover) .room-object--research,
+  .room-menu:has(.room-link--research:focus-visible) .room-object--research,
+  .room-menu:has(.room-link--notes:hover) .room-object--notes,
+  .room-menu:has(.room-link--notes:focus-visible) .room-object--notes,
+  .room-menu:has(.room-link--contact:hover) .room-object--contact,
+  .room-menu:has(.room-link--contact:focus-visible) .room-object--contact { opacity: 0.32; }
+
   .mobile-menu { display: none; }
 
   @media (max-width: 700px) {
     .home-page { width: min(100% - 2rem, 1500px); padding-top: 1.5rem; }
+    .home-intro {
+      position: static;
+      width: 100%;
+      margin: 0 auto;
+      transform: none;
+    }
     .room-menu { display: none; }
-    .mobile-menu { display: grid; gap: 0.85rem; margin-top: 3rem; }
-    .mobile-menu a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 5.8rem; padding: 1.1rem 1.25rem; border: 2px solid #b4b4b4; border-radius: 0.75rem; transition: border-color 180ms ease, transform 180ms ease; }
-    .mobile-menu a:hover, .mobile-menu a:focus-visible { border-color: #1e63c6; outline: none; transform: translateY(-0.15rem); }
+    .mobile-menu { display: grid; gap: 1.15rem; margin-top: 2.25rem; }
+    .mobile-menu a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 5.8rem; padding: 1.1rem 1.25rem; border: 2px solid #101728; border-radius: 0; background: #fffdfc; box-shadow: 0.35rem 0.4rem 0 #b8d1f7; transition: box-shadow 180ms ease, transform 180ms ease; }
+    .mobile-menu a:hover, .mobile-menu a:focus-visible { outline: none; box-shadow: 0.5rem 0.55rem 0 #8eb9f5; transform: translate(-0.12rem, -0.15rem); }
     .mobile-menu a span { display: grid; gap: 0.25rem; }
-    .mobile-menu strong { color: #1e63c6; font-family: var(--font-handwriting); font-size: 1.8rem; font-weight: 400; }
+    .mobile-menu strong { color: #1e63c6; font-family: var(--font-handwriting); font-size: 1.65rem; font-weight: 400; }
     .mobile-menu small { font-size: 0.9rem; font-weight: 700; }
     .mobile-menu b { color: #1e63c6; font-family: var(--font-handwriting); font-size: 1.7rem; font-weight: 400; }
   }
 </style>
+
+<script>
+  const roomMenu = document.querySelector(".room-menu");
+  const homeIntro = document.querySelector(".home-intro");
+  const roomFocus = roomMenu?.querySelector(".room-focus");
+  const focusTitle = roomFocus?.querySelector(".room-focus-title");
+  const focusDescription = roomFocus?.querySelector(".room-focus-description");
+  const focusArrow = roomFocus?.querySelector(".room-focus-arrow");
+  const defaultTitle = "";
+
+  const resetFocus = () => {
+    if (!roomFocus || !focusTitle || !focusDescription || !focusArrow) return;
+    roomFocus.classList.remove("is-active");
+    homeIntro?.classList.remove("is-hidden");
+    focusTitle.textContent = defaultTitle;
+    focusDescription.textContent = "";
+    focusArrow.textContent = "";
+  };
+
+  roomMenu?.querySelectorAll(".room-link").forEach((link) => {
+    const setFocus = () => {
+      if (!roomFocus || !focusTitle || !focusDescription || !focusArrow) return;
+      roomFocus.classList.add("is-active");
+      homeIntro?.classList.add("is-hidden");
+      focusTitle.textContent = link.dataset.title ?? "";
+      focusDescription.textContent = link.dataset.description ?? "";
+      focusArrow.textContent = "→";
+    };
+
+    link.addEventListener("pointerenter", setFocus);
+    link.addEventListener("focus", setFocus);
+    link.addEventListener("pointerleave", resetFocus);
+    link.addEventListener("blur", resetFocus);
+  });
+</script>
