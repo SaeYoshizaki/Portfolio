@@ -1,0 +1,83 @@
+---
+interface Props {
+  title?: string;
+  message?: string;
+  detail?: string;
+}
+
+const {
+  title = "Coming soon",
+  message = "ただいま準備中です。",
+} = Astro.props;
+---
+
+<section class="preparing-note" aria-labelledby="preparing-note-title">
+  <span class="masking-tape" aria-hidden="true"></span>
+  <div class="note-content">
+    <h2 id="preparing-note-title">{title}</h2>
+    <p class="note-message">{message}</p>
+  </div>
+</section>
+
+<style>
+  .preparing-note {
+    position: relative;
+    display: grid;
+    width: min(100%, 38rem);
+    min-height: clamp(17rem, 24vw, 22rem);
+    padding: clamp(2.75rem, 5vw, 3.75rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem);
+    border: 2px solid #101728;
+    background: #fffdfc;
+    box-shadow: 0.55rem 0.65rem 0 #d4e2f8;
+    place-items: center;
+    text-align: center;
+  }
+
+  .masking-tape {
+    position: absolute;
+    top: -0.92rem;
+    left: 50%;
+    width: clamp(6.5rem, 11vw, 9.5rem);
+    height: 1.7rem;
+    border: 1px solid rgba(16, 23, 40, 0.28);
+    background: repeating-linear-gradient(135deg, #4c88dc 0 2px, #75a6e8 2px 4px);
+    box-shadow: 0 0.12rem 0 rgba(16, 23, 40, 0.12);
+    clip-path: polygon(0 0, 96% 0, 100% 12%, 96% 24%, 100% 36%, 96% 48%, 100% 60%, 96% 72%, 100% 84%, 96% 100%, 0 100%, 4% 88%, 0 76%, 4% 64%, 0 52%, 4% 40%, 0 28%, 4% 16%);
+    transform: translateX(-50%) rotate(-3deg);
+  }
+
+  .note-content { display: grid; justify-items: center; }
+  .note-content h2,
+  .note-content p { margin: 0; }
+
+  .note-content h2 {
+    display: inline-block;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid currentColor;
+    color: #1e63c6;
+    font-family: var(--font-handwriting);
+    font-size: clamp(2rem, 3.2vw, 3rem);
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .note-message {
+    margin-top: clamp(2.2rem, 4vw, 3.5rem) !important;
+    color: #101728;
+    font-size: clamp(1.2rem, 2vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.7;
+  }
+
+  .note-detail {
+    margin-top: 1rem !important;
+    color: #101728;
+    font-size: clamp(0.98rem, 1.4vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .preparing-note { min-height: 17rem; padding-inline: 1.25rem; }
+  }
+</style>

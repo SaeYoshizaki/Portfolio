@@ -77,8 +77,6 @@ const timeline = [
   <main class="about-page">
     <Header currentPath={Astro.url.pathname} />
 
-    <a class="back-link" href="/">← <span>Home</span></a>
-
     <section class="about-intro" aria-labelledby="about-title">
       <div class="profile-image-wrap">
         <img
@@ -155,15 +153,6 @@ const timeline = [
     width: min(100% - 2rem, 1500px);
     margin: 0.75rem auto;
     padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4.5vw, 4.5rem) 4.5rem;
-  }
-
-  .back-link {
-    display: inline-flex;
-    gap: 0.5rem;
-    margin-top: clamp(2.5rem, 5vw, 4.25rem);
-    color: #101728;
-    font-family: var(--font-handwriting);
-    font-size: clamp(1.05rem, 1.45vw, 1.45rem);
   }
 
   h1, h2, h3, p { margin: 0; }
@@ -516,7 +505,6 @@ const timeline = [
 
   @media (max-width: 580px) {
     .about-page { width: min(100% - 1rem, 1320px); padding-inline: 1.25rem; }
-    .back-link { margin-top: 2.25rem; }
     .lead br { display: none; }
     .profile-image-wrap { width: min(58vw, 215px); }
     .interest-item { min-height: 0; }

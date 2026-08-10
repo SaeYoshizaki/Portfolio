@@ -1,18 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
+import PreparingNote from "../components/PreparingNote.astro";
 ---
 
 <BaseLayout title="Research | Sae Yoshizaki" description="Sae Yoshizakiの研究テーマと取り組み">
   <main class="preparing-page">
     <Header currentPath={Astro.url.pathname} />
 
-    <a class="back-link" href="/">← <span>Home</span></a>
-
     <section class="page-intro" aria-labelledby="research-title">
       <h1 id="research-title">Research</h1>
-      <p>現在準備中です。</p>
     </section>
+
+    <div class="preparing-note-wrap">
+      <PreparingNote />
+    </div>
   </main>
 </BaseLayout>
 
@@ -25,15 +27,6 @@ import Header from "../components/Header.astro";
   }
 
   h1, p { margin: 0; }
-
-  .back-link {
-    display: inline-flex;
-    gap: 0.5rem;
-    margin-top: clamp(2.5rem, 5vw, 4.25rem);
-    color: #101728;
-    font-family: var(--font-handwriting);
-    font-size: clamp(1.05rem, 1.45vw, 1.45rem);
-  }
 
   .page-intro {
     margin: clamp(2.25rem, 4vw, 3.5rem) 0 0 clamp(0.5rem, 4vw, 4.75rem);
@@ -56,6 +49,12 @@ import Header from "../components/Header.astro";
     font-size: clamp(1.1rem, 2vw, 1.55rem);
     font-weight: 700;
     line-height: 1.9;
+  }
+
+  .preparing-note-wrap {
+    display: grid;
+    margin: clamp(2.5rem, 4vw, 3.75rem) auto 0;
+    place-items: center;
   }
 
   .intro-line {

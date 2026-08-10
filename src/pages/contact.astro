@@ -13,8 +13,6 @@ const contacts = [
   <main class="contact-page">
     <Header currentPath={Astro.url.pathname} />
 
-    <a class="back-link" href="/">← <span>Home</span></a>
-
     <section class="contact-intro" aria-labelledby="contact-title">
       <h1 id="contact-title">Contact</h1>
       <p>お仕事のご依頼・ご相談・ご質問など、お気軽にご連絡ください。</p>
@@ -71,15 +69,6 @@ const contacts = [
   }
 
   h1, p { margin: 0; }
-
-  .back-link {
-    display: inline-flex;
-    gap: 0.5rem;
-    margin-top: clamp(2.5rem, 5vw, 4.25rem);
-    color: #101728;
-    font-family: var(--font-handwriting);
-    font-size: clamp(1.05rem, 1.45vw, 1.45rem);
-  }
 
   .contact-intro {
     margin: clamp(2.25rem, 4vw, 3.5rem) 0 0 clamp(0.5rem, 4vw, 4.75rem);
