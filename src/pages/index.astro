@@ -33,6 +33,38 @@ const roomLinks = [
     className: "room-link--contact",
   },
 ];
+
+const mobileProfile = [
+  { label: "所属", value: "早稲田大学 基幹理工学部 情報通信学科" },
+  { label: "研究室", value: "未所属" },
+];
+
+const mobileTimeline = [
+  { date: "2024年4月", text: "早稲田大学 基幹理工学部 情報通信学科に入学" },
+  { date: "2024年9月", text: "コンピュータ研究会 WINC 主催ハッカソンに参加" },
+  { date: "2024年12月〜現在", text: "株式会社サードスコープにてインターンシップ" },
+  { date: "2025年9月", text: "コンピュータ研究会 WINC 主催ハッカソンに参加" },
+  { date: "2025年9月", text: "セキュリティ・キャンプミニ山梨に参加" },
+  { date: "2026年8月", text: "セキュリティ・キャンプ全国大会に参加" },
+  { date: "2026年8月", text: "NRI「実践型」インターンシップ（IoTセキュリティ）に参加", planned: true },
+  { date: "2026年9月", text: "Sony 職場密着インターンに参加", planned: true },
+];
+
+const mobileInterests = [
+  { title: "Network Security", text: "通信の可視化・解析を通して、未知の脅威やリスクを検出する研究をしています。" },
+  { title: "IoT Security", text: "家庭内IoT機器の調査や、安全に使うための仕組みを考えています。" },
+];
+
+const mobileSkills = [
+  "Go", "Python", "C/C++", "TypeScript", "React", "Next.js",
+  "Wireshark", "gopacket", "TCP/IP", "HTTP", "Git", "Docker",
+];
+
+const mobileContacts = [
+  { label: "Email", value: "yoshizakisae@gmail.com", href: "mailto:yoshizakisae@gmail.com", external: false },
+  { label: "GitHub", value: "SaeYoshizaki", href: "https://github.com/SaeYoshizaki", external: true },
+  { label: "X (Twitter)", value: "@u408a", href: "https://x.com/u408a", external: true },
+];
 ---
 
 <BaseLayout
@@ -42,7 +74,10 @@ const roomLinks = [
   <main class="home-page">
     <header class="home-intro">
       <h1>Sae Yoshizaki<span class="possessive-mark">'</span>s Portfolio</h1>
-      <p>気になるところからのぞいてみてね。</p>
+      <p>
+        <span class="intro-copy--desktop">気になるところからのぞいてみてね。</span>
+        <span class="intro-copy--mobile">研究・開発の記録</span>
+      </p>
     </header>
 
     <section class="room-menu" aria-label="部屋を探索する">
@@ -107,19 +142,87 @@ const roomLinks = [
       </nav>
     </section>
 
-    <nav class="mobile-menu" aria-label="サイトメニュー">
-      {
-        roomLinks.map((link) => (
-          <a href={link.href}>
-            <span>
-              <strong>{link.title}</strong>
-              <small>{link.description}</small>
-            </span>
-            <b aria-hidden="true">→</b>
-          </a>
-        ))
-      }
-    </nav>
+    <section class="mobile-home-content" aria-label="About">
+      <section class="about-intro" aria-labelledby="about-title">
+        <div class="profile-image-wrap">
+          <img src="/images/about/hero.png" alt="手描きの猫のアイコン" class="profile-image" />
+        </div>
+        <div class="intro-copy">
+          <h1 id="about-title">Sae Yoshizaki</h1>
+          <p class="lead">IoTセキュリティやネットワーク解析を中心に、安全で信頼できるシステムの研究・開発に取り組んでいます。</p>
+          <dl class="profile-list">
+          {
+            mobileProfile.map((item) => (
+              <div>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))
+          }
+          </dl>
+        </div>
+      </section>
+
+      <section class="interests" aria-labelledby="interest-title">
+        <h2 id="interest-title">Research interests</h2>
+        <div class="interest-grid">
+          {
+            mobileInterests.map((interest) => (
+              <article class="interest-item">
+                <span class="pin" aria-hidden="true"></span>
+                <h3>{interest.title}</h3>
+                <p>{interest.text}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="skills" aria-labelledby="skills-title">
+        <h2 id="skills-title">Tools I use</h2>
+        <ul>{mobileSkills.map((skill) => <li>{skill}</li>)}</ul>
+      </section>
+
+      <section class="timeline" aria-labelledby="timeline-title">
+        <h2 id="timeline-title">Timeline</h2>
+        <ol class="timeline-list">
+          {
+            mobileTimeline.map((item) => (
+              <li class="timeline-item">
+                <time>{item.date}</time>
+                <span class="timeline-marker" aria-hidden="true"></span>
+                <div class="timeline-content">
+                  <p>{item.text}</p>
+                  {item.planned && <span class="planned-badge">予定</span>}
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section class="mobile-contact" aria-labelledby="contact-title">
+        <h2 id="contact-title">Contact</h2>
+        <p>お仕事のご依頼・ご相談・ご質問など、お気軽にご連絡ください。</p>
+        <ul class="mobile-contact-list">
+          {
+            mobileContacts.map((contact) => (
+              <li>
+                <a
+                  href={contact.href}
+                  target={contact.external ? "_blank" : undefined}
+                  rel={contact.external ? "noreferrer" : undefined}
+                  aria-label={`${contact.label}: ${contact.value}`}
+                >
+                  <strong>{contact.label}</strong>
+                  <span>{contact.value}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </section>
   </main>
 </BaseLayout>
 
@@ -280,24 +383,151 @@ const roomLinks = [
   .room-menu:has(.room-link--contact:hover) .room-object--contact,
   .room-menu:has(.room-link--contact:focus-visible) .room-object--contact { opacity: 0.32; }
 
-  .mobile-menu { display: none; }
+  .mobile-home-content { display: none; }
+  .intro-copy--mobile { display: none; }
 
-  @media (max-width: 700px) {
-    .home-page { width: min(100% - 2rem, 1500px); padding-top: 1.5rem; }
+  @media (max-width: 1024px) {
+    .home-page {
+      width: min(100% - 3.5rem, 1500px);
+      padding: 3.25rem 0 4rem 1.5rem;
+    }
+    .home-page::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 1px;
+      background: #78a7ec;
+      content: "";
+    }
     .home-intro {
       position: static;
       width: 100%;
       margin: 0 auto;
       transform: none;
     }
+    .home-intro h1 {
+      padding-bottom: 0.55rem;
+      font-size: clamp(1.65rem, 7.2vw, 2.2rem);
+      line-height: 1.05;
+    }
+    .home-intro p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .intro-copy--desktop { display: none; }
+    .intro-copy--mobile { display: inline; }
     .room-menu { display: none; }
-    .mobile-menu { display: grid; gap: 1.15rem; margin-top: 2.25rem; }
-    .mobile-menu a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 5.8rem; padding: 1.1rem 1.25rem; border: 2px solid #101728; border-radius: 0; background: #fffdfc; box-shadow: 0.35rem 0.4rem 0 #b8d1f7; transition: box-shadow 180ms ease, transform 180ms ease; }
-    .mobile-menu a:hover, .mobile-menu a:focus-visible { outline: none; box-shadow: 0.5rem 0.55rem 0 #8eb9f5; transform: translate(-0.12rem, -0.15rem); }
-    .mobile-menu a span { display: grid; gap: 0.25rem; }
-    .mobile-menu strong { color: #1e63c6; font-family: var(--font-handwriting); font-size: 1.65rem; font-weight: 400; }
-    .mobile-menu small { font-size: 0.9rem; font-weight: 700; }
-    .mobile-menu b { color: #1e63c6; font-family: var(--font-handwriting); font-size: 1.7rem; font-weight: 400; }
+    .mobile-home-content {
+      display: grid;
+      gap: 3.75rem;
+      margin-top: 4.25rem;
+    }
+
+    /* TOPでは、Aboutページのモバイルレイアウトをそのまま表示する。 */
+    .home-page {
+      width: min(100% - 2rem, 1500px);
+      margin: 0.75rem auto;
+      padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4.5vw, 4.5rem) 4.5rem;
+    }
+    .home-page::before,
+    .home-intro { display: none; }
+    .mobile-home-content { display: block; margin-top: 0; }
+    .mobile-home-content h1,
+    .mobile-home-content h2,
+    .mobile-home-content h3 {
+      color: #1e63c6;
+      font-family: var(--font-handwriting);
+      font-weight: 400;
+    }
+    .about-intro {
+      display: grid;
+      grid-template-columns: minmax(7.5rem, 0.36fr) minmax(0, 0.64fr);
+      gap: 1.35rem;
+      align-items: start;
+      width: min(100%, 1080px);
+      margin: clamp(1.75rem, 3.5vw, 3rem) auto 0;
+    }
+    .profile-image-wrap {
+      position: relative;
+      grid-column: 1;
+      grid-row: 1;
+      width: 100%;
+      justify-self: stretch;
+      padding: 0.55rem;
+      border: 2px solid #a9c9ef;
+      border-radius: 1.8rem;
+    }
+    .profile-image { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 1.25rem; }
+    .intro-copy { display: contents; }
+    .intro-copy h1,
+    .interests h2,
+    .skills h2,
+    .timeline h2,
+    .mobile-contact h2 {
+      display: inline-block;
+      padding-bottom: 0.2rem;
+      border-bottom: 3px solid currentColor;
+      font-size: clamp(1.8rem, 2.65vw, 2.5rem);
+      line-height: 1.05;
+    }
+    .intro-copy h1 {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: center;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+    .lead { grid-column: 1 / -1; grid-row: 2; margin-top: 0.35rem; color: #101728; font-size: clamp(0.98rem, 1.35vw, 1.2rem); font-weight: 700; line-height: 1.9; }
+    .profile-list { display: grid; grid-column: 1 / -1; grid-row: 3; margin: clamp(1.5rem, 3vw, 2.25rem) 0 0; }
+    .profile-list div { display: grid; grid-template-columns: minmax(5rem, 0.26fr) 1fr; gap: 0.75rem; align-items: center; padding: 1rem 0; border-top: 1px solid #1e63c6; }
+    .profile-list div:last-child { border-bottom: 1px solid #1e63c6; }
+    .profile-list dt { display: flex; gap: 0.65rem; align-items: center; color: #1e63c6; font-weight: 700; }
+    .profile-list dd { margin: 0; font-size: clamp(0.9rem, 1.2vw, 1.08rem); font-weight: 700; line-height: 1.55; }
+    .interests { width: min(100%, 1120px); margin: clamp(3.75rem, 7vw, 6rem) auto 0; }
+    .interest-grid { display: grid; grid-template-columns: 1fr; margin-top: 1.7rem; border-top: 1.5px solid #101728; }
+    .interest-item { position: relative; min-height: 0; padding: 1.45rem 0 1.5rem 1.35rem; border-bottom: 1.5px solid #101728; background: transparent; }
+    .interest-item::before { position: absolute; top: 1.35rem; bottom: 1.35rem; left: 0; width: 3px; border-radius: 99px; background: #8cb6ed; content: ""; }
+    .interest-item::after,
+    .pin { display: none; }
+    .interest-item h3,
+    .interest-item p { margin-left: 0; }
+    .interest-item h3 {
+      display: inline-block;
+      padding: 0;
+      font-size: clamp(1.3rem, 5vw, 1.65rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+    .interest-item h3::after { display: none; }
+    .interest-item p { margin-top: 0.8rem; color: #101728; font-size: clamp(0.86rem, 1.15vw, 1rem); font-weight: 700; line-height: 1.75; }
+    .skills { display: block; width: min(100%, 1120px); margin: clamp(2.5rem, 4vw, 3.5rem) auto 0; }
+    .skills ul { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
+    .skills li { min-width: 5.5rem; padding: 0.42rem 0.9rem; border: 2px solid #101728; border-radius: 0.45rem; color: #101728; font-family: var(--font-handwriting); font-size: clamp(1rem, 1.25vw, 1.2rem); text-align: center; }
+    .timeline { width: min(100%, 1120px); margin: clamp(4rem, 7vw, 6.5rem) auto 0; }
+    .timeline-list { position: relative; display: grid; gap: 0; margin: clamp(2rem, 3.5vw, 3rem) 0 0; padding: 0; list-style: none; }
+    .timeline-list::before { position: absolute; top: 0; bottom: 0; left: 9px; width: 2px; background: #101728; content: ""; }
+    .timeline-item { display: grid; grid-template-columns: 1.35rem 1fr; gap: 0.85rem; align-items: start; min-height: clamp(4.3rem, 6vw, 5.4rem); }
+    .timeline-item time { grid-column: 2; padding: 0; color: #1e63c6; font-size: clamp(0.98rem, 1.45vw, 1.25rem); font-weight: 700; line-height: 1.45; text-align: left; }
+    .timeline-marker { z-index: 1; grid-row: 1 / span 2; grid-column: 1; width: 1.05rem; height: 1.05rem; margin: 0; border-radius: 50%; background: #1e63c6; box-shadow: 0 0 0 2px #faf5f3; transform: translateX(-1px); }
+    .timeline-content { display: flex; grid-row: 2; grid-column: 2; gap: 0.85rem; align-items: flex-start; min-width: 0; }
+    .timeline-content::before { display: none; }
+    .timeline-content p { color: #101728; font-size: clamp(1rem, 1.45vw, 1.28rem); font-weight: 700; line-height: 1.6; }
+    .planned-badge { flex: 0 0 auto; padding: 0.1rem 0.5rem; border: 1px solid #1e63c6; border-radius: 0.35rem; color: #1e63c6; font-size: 0.85rem; font-weight: 700; line-height: 1.35; }
+    .mobile-contact { width: min(100%, 1120px); margin: clamp(4rem, 7vw, 6rem) auto 0; }
+    .mobile-contact > p { margin: clamp(1.25rem, 2vw, 1.8rem) 0 0; color: #101728; font-size: clamp(0.98rem, 1.35vw, 1.2rem); font-weight: 700; line-height: 1.8; }
+    .mobile-contact-list { display: grid; grid-template-columns: 1fr; gap: 2rem; margin: 3rem 0 0; padding: 0; list-style: none; }
+    .mobile-contact-list li { width: 75%; margin: 0 auto; }
+    .mobile-contact-list a { position: relative; display: grid; min-height: 10rem; padding: 2rem 1.5rem; border: 2px solid #101728; background: #fffdfc; box-shadow: 0.5rem 0.55rem 0 #b8d1f7; color: #101728; place-items: center; text-align: center; transform: rotate(-2deg); transition: transform 180ms ease, box-shadow 180ms ease; }
+    .mobile-contact-list li:nth-child(2) a { transform: rotate(0.5deg); }
+    .mobile-contact-list li:nth-child(3) a { transform: rotate(2deg); }
+    .mobile-contact-list a::before { position: absolute; top: -0.8rem; left: 50%; width: 4.2rem; height: 1.25rem; border: 1px solid rgba(16, 23, 40, 0.28); background: repeating-linear-gradient(135deg, #4c88dc 0 2px, #75a6e8 2px 4px); box-shadow: 0 0.12rem 0 rgba(16, 23, 40, 0.12); clip-path: polygon(0 0, 96% 0, 100% 12%, 96% 24%, 100% 36%, 96% 48%, 100% 60%, 96% 72%, 100% 84%, 96% 100%, 0 100%, 4% 88%, 0 76%, 4% 64%, 0 52%, 4% 40%, 0 28%, 4% 16%); content: ""; transform: translateX(-50%) rotate(-4deg); }
+    .mobile-contact-list li:first-child a::before { transform: translateX(-50%) rotate(3deg); }
+    .mobile-contact-list li:nth-child(3) a::before { transform: translateX(-50%) rotate(2deg); }
+    .mobile-contact-list a:hover, .mobile-contact-list a:focus-visible { box-shadow: 0.7rem 0.8rem 0 #8eb9f5; outline: none; transform: translate(-0.15rem, -0.25rem) rotate(-1deg); }
+    .mobile-contact-list strong { color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(1.65rem, 2.5vw, 2.25rem); font-weight: 400; line-height: 1.15; }
+    .mobile-contact-list strong::after { display: block; width: 82%; height: 2px; margin: 0.2rem auto 0; background: currentColor; content: ""; transform: rotate(-1deg); }
+    .mobile-contact-list span { overflow-wrap: anywhere; font-size: clamp(0.9rem, 1.15vw, 1.05rem); line-height: 1.5; }
   }
 </style>
 

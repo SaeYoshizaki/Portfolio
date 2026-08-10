@@ -2,56 +2,98 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 
-const projects = [
-  {
-    title: "Quarant",
-    description:
-      "家庭内ネットワークをパッシブ監視し、IoT機器の通信を解析・リスクを可視化するツール",
-    slug: "quarant",
-  },
-];
 ---
 
 <BaseLayout
-  title="Projects | Sae Yoshizaki"
-  description="Sae Yoshizakiで取り組んだプロジェクトの紹介"
+  title="Quarant | Projects | Sae Yoshizaki"
+  description="家庭内IoT機器の通信をパッシブに監視し、通信から確認できるセキュリティ上のリスクを可視化するツール"
 >
   <main class="projects-page">
     <Header currentPath={Astro.url.pathname} />
 
-    <section class="projects-intro" aria-labelledby="projects-title">
-      <h1 id="projects-title">Projects</h1>
-      <p>
-        これまでに取り組んだプロジェクトをまとめています。
-      </p>
-    </section>
+    <article class="project-article">
+      <header class="project-header">
+        <h1>Quarant</h1>
+        <p class="project-lead">
+          家庭内IoT機器の通信をパッシブに監視し、通信から確認できるセキュリティ上のリスクを可視化するツールです。
+        </p>
+        <p class="project-summary">
+          IoT機器に対してスキャンやログインなどの操作を行うのではなく、普段流れている通信を観測することで、利用者側から機器の通信状態やセキュリティ上気になる点を確認できる仕組みを目指して開発しています。
+        </p>
+      </header>
 
-    <section class="project-archive" aria-labelledby="archive-title">
-      <div class="archive-heading">
-        <p id="archive-title">Project archive</p>
-      </div>
+      <section aria-labelledby="why-title">
+        <h2 id="why-title"><span>01.</span> なぜ作ったのか</h2>
+        <p>家庭の中には、ネットワークカメラやスマート家電をはじめ、インターネットに接続する機器が増えています。</p>
+        <p>一方で、それらの機器が普段どこへ通信しているのか、通信が適切に暗号化されているのかといったことを、利用者が確認する機会はほとんどありません。</p>
+        <p>そこで、「IoT機器に直接触らなくても、普段流れている通信を見ることで分かることがあるのではないか」と考えたことが、Quarantを作り始めたきっかけです。</p>
+        <p>機器に対して能動的に調査を行うのではなく、家庭内ネットワークを流れる通信を観測し、そこから確認できるセキュリティ上のリスクを利用者に分かる形で示すことを目指しています。</p>
+      </section>
 
-      <div class="project-list">
-        {
-          projects.map((project) => (
-            <article class="project-record">
-              <div class="project-content">
-                <h2>{project.title}</h2>
-                <p>{project.description}</p>
-              </div>
+      <section aria-labelledby="what-title">
+        <h2 id="what-title"><span>02.</span> Quarantがすること</h2>
+        <p>Quarantは、IoT機器のネットワーク通信を取得し、パケットに含まれる情報を解析します。</p>
+        <p>現在は主にHTTP、TLS、DNSなどの通信を対象としており、プロトコルごとに必要な情報を取り出して、あらかじめ定義したルールと照合します。</p>
+        <p>たとえば、次のような情報を確認します。</p>
+        <ul class="check-list">
+          <li>HTTPなどによる平文通信</li>
+          <li>通信上に露出している認証情報</li>
+          <li>使用されているTLSのバージョンや暗号設定</li>
+          <li>自己署名証明書など、証明書に関する情報</li>
+          <li>DNS問い合わせや通信先の情報</li>
+        </ul>
+        <p>検出した内容は、「通信上で実際に確認できたこと」をもとに、利用者が確認できる形で出力します。Quarantだけで機器の安全性そのものを判断するのではなく、あくまで通信を観測することで確認できる範囲のリスクを見つけることを目的としています。</p>
+      </section>
 
-              <a
-                class="detail-link"
-                href={`/projects/${project.slug}/`}
-                aria-label={`${project.title}の詳細を見る`}
-              >
-                View project <span aria-hidden="true">→</span>
-              </a>
-            </article>
-          ))
-        }
-      </div>
-    </section>
+      <section aria-labelledby="passive-title">
+        <h2 id="passive-title"><span>03.</span> なぜパッシブ監視なのか</h2>
+        <p>Quarantでは、対象となるIoT機器に対してスキャンを行ったり、ログインを試したりすることはありません。機器が普段行っている通信を受動的に観測する「パッシブ監視」を採用しています。</p>
+        <p>これは、特別な操作を行わなくても家庭内で継続的に利用できる仕組みにしたいと考えたためです。</p>
+        <p>能動的なスキャンを行えば、さらに多くの情報を取得できる可能性があります。一方で、対象機器に通信を送る必要があり、機器の動作やネットワーク環境に影響を与える可能性もあります。</p>
+        <p>そのためQuarantでは、「対象機器にはできるだけ触らず、普段の通信からどこまで分かるのか」という考え方を一つの軸にしています。</p>
+      </section>
+
+      <section aria-labelledby="analysis-title">
+        <h2 id="analysis-title"><span>04.</span> 通信をどう解析しているのか</h2>
+        <p>QuarantはGoで開発しており、パケット解析にはgopacketを使用しています。取得したパケットをEthernet、IP、TCP、UDPなどのレイヤーに分け、その上でHTTP、TLS、DNSといったプロトコルごとの解析を行います。</p>
+        <p>解析の大まかな流れは、Packet Capture → Packet Parsing → HTTP / TLS / DNS Analysis → Rule Check → Finding です。</p>
+        <p>TLS通信では、TLSハンドシェイクから取得できる情報を解析し、使用されているTLSバージョンや暗号設定、証明書などを確認します。HTTP通信では、暗号化されていない通信内容から、認証情報など重要な情報が露出していないかを確認します。DNSについては、IoT機器がどのようなドメインへ問い合わせを行っているのかを記録し、通信先を把握するための情報として利用しています。</p>
+      </section>
+
+      <section aria-labelledby="rule-title">
+        <h2 id="rule-title"><span>05.</span> ルールベースで判定する</h2>
+        <p>Quarantでは、通信から取得した情報をあらかじめ定義したルールと照合することで、セキュリティ上確認したい項目を検出しています。</p>
+        <p>この方式を採用した理由の一つは、「なぜその項目が検出されたのか」を分かるようにしたかったためです。</p>
+        <p>たとえば古いTLSバージョンが確認された場合には、観測した通信・使用されているTLSバージョン・定義した判定ルール・検出結果という流れで結果を出します。</p>
+        <p>単に「危険」と表示するのではなく、通信上で何を確認し、それをどのルールに基づいて判断したのかを追えるようにすることを重視しています。ルールを追加・変更しやすいことも、この方式を採用している理由の一つです。</p>
+      </section>
+
+      <section aria-labelledby="device-title">
+        <h2 id="device-title"><span>06.</span> 実際のIoT機器で試す</h2>
+        <p>実装した機能が実際の環境でも利用できるのかを確認するため、市販のIoT機器を家庭内ネットワークに接続し、実際に発生する通信を取得して検証しています。</p>
+        <p>取得したパケットをQuarantで解析し、HTTPやTLS、DNSなどの通信がどのように行われているのか、また、実際の通信からどのような情報を取得できるのかを確認しました。</p>
+        <p>実機で試すことで、コード上では想定していなかった通信が現れたり、同じ機器でも操作によって通信内容が変化したりすることも分かりました。</p>
+        <p>実装 → 実機で通信を取得 → 解析 → 問題点を確認 → 修正という流れを繰り返しながら開発しています。</p>
+      </section>
+
+      <section aria-labelledby="limits-title">
+        <h2 id="limits-title"><span>07.</span> パッシブ監視で分かること・分からないこと</h2>
+        <p>Quarantを開発しながら特に意識するようになったのが、「観測できた事実」と「そこから推測できること」を分けることです。</p>
+        <p>たとえば、平文で送られているHTTP通信であれば、その内容をパケットから直接確認できます。一方、TLSによって暗号化された通信では、通信しているという事実やハンドシェイクから得られる情報を確認できても、暗号化された通信内容そのものを見ることはできません。</p>
+        <p>また、ある通信が確認できなかったからといって、「その通信を行わない」と断定することもできません。観測していないタイミングや、別の操作を行った際に発生する可能性があるためです。</p>
+        <p>通信から直接確認できた事実、そこから考えられること、パッシブ監視だけでは判断できないことを、できるだけ区別して扱うことを大切にしています。</p>
+        <p>「パッシブ監視だけでIoT機器についてどこまで分かるのか」という点自体も、Quarantを開発する中で検証しているテーマの一つです。</p>
+      </section>
+
+      <section aria-labelledby="future-title">
+        <h2 id="future-title"><span>08.</span> 今後やりたいこと</h2>
+        <p>現在のQuarantは、取得したパケットやPCAPファイルを解析し、通信上のリスクを確認する機能を中心に開発しています。</p>
+        <p>今後は解析できる通信や判定ルールを増やすだけでなく、家庭内ネットワークで継続的に動作させられる仕組みにしていきたいと考えています。</p>
+        <p>最終的には、利用者が一つ一つパケットを確認しなくても、「どのIoT機器が、どこへ、どのような通信を行っているのか」を把握でき、気になる通信があればその理由まで確認できるようなツールを目指しています。</p>
+        <p>また、OpenWrtなどのネットワーク機器上で動作させることも検討しており、実際の家庭内ネットワークの中で継続的に通信を観測できる形へ発展させていきたいと考えています。</p>
+      </section>
+
+    </article>
   </main>
 </BaseLayout>
 
@@ -59,116 +101,29 @@ const projects = [
   .projects-page {
     width: min(100% - 2rem, 1500px);
     margin: 0.75rem auto;
-    padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4.5vw, 4.5rem) 5rem;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 4.5vw, 4.5rem) 7rem;
   }
 
+  .project-article { width: min(100%, 860px); margin: clamp(3rem, 6vw, 5.5rem) auto 0; }
   h1, h2, p { margin: 0; }
 
-  h1, h2 {
-    color: #1e63c6;
-    font-family: var(--font-handwriting);
-    font-weight: 400;
-  }
+  .project-header h1 { display: inline-block; color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(2.4rem, 3.8vw, 3.4rem); font-weight: 300; line-height: 0.95; }
+  .project-lead { margin-top: clamp(1.5rem, 3vw, 2rem); color: #101728; font-size: clamp(1.05rem, 1.5vw, 1.28rem); font-weight: 700; line-height: 1.8; }
+  .project-summary { margin-top: 1rem; color: #101728; font-size: clamp(0.95rem, 1.25vw, 1.08rem); font-weight: 700; line-height: 1.9; }
 
-  .projects-intro {
-    width: min(100%, 760px);
-    margin: clamp(2.25rem, 4vw, 3.5rem) 0 0 clamp(0.5rem, 4vw, 4.75rem);
-  }
+  section { margin-top: clamp(3.5rem, 6vw, 5rem); }
+  section h2 { padding-bottom: 0.55rem; border-bottom: 2px solid #101728; color: #1e63c6; font-family: var(--font-handwriting); font-size: clamp(1.55rem, 2.3vw, 2rem); font-weight: 400; line-height: 1.2; }
+  section h2 span { margin-right: 0.4rem; font-size: 0.8em; }
+  section > p { margin-top: 1.2rem; color: #101728; font-size: clamp(0.95rem, 1.25vw, 1.08rem); font-weight: 700; line-height: 2; }
 
-  .projects-intro h1 {
-    display: inline-block;
-    padding-bottom: 0.2rem;
-    border-bottom: 3px solid currentColor;
-    font-size: clamp(2.4rem, 3.4vw, 3.3rem);
-    line-height: 1;
-  }
+  .check-list { display: grid; gap: 0.5rem; margin: 1.15rem 0 0; padding-left: 1.3rem; }
+  .check-list li { color: #101728; font-size: clamp(0.95rem, 1.25vw, 1.08rem); font-weight: 700; line-height: 1.8; }
+  .check-list li::marker { color: #1e63c6; }
 
-  .projects-intro p {
-    margin-top: clamp(1.25rem, 2vw, 1.8rem);
-    color: #101728;
-    font-size: clamp(0.98rem, 1.35vw, 1.2rem);
-    font-weight: 700;
-    line-height: 1.9;
-  }
 
-  .project-archive {
-    width: min(100%, 1120px);
-    margin: clamp(3rem, 5vw, 4.5rem) auto 0;
-  }
-
-  .archive-heading {
-    display: flex;
-    align-items: baseline;
-    padding-bottom: 0.9rem;
-    border-bottom: 2px solid #101728;
-  }
-
-  .archive-heading p {
-    color: #1e63c6;
-    font-family: var(--font-handwriting);
-    font-size: clamp(1.35rem, 2vw, 1.85rem);
-  }
-
-  .project-list { display: grid; }
-
-  .project-record {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: clamp(1.5rem, 4vw, 4rem);
-    align-items: center;
-    padding: clamp(1.75rem, 3vw, 2.75rem) clamp(0.5rem, 1.1vw, 1rem);
-    border-bottom: 2px solid #101728;
-  }
-
-  .project-content h2 {
-    color: #101728;
-    font-size: clamp(1.7rem, 2.4vw, 2.25rem);
-    line-height: 1;
-  }
-
-  .project-content p {
-    margin-top: 0.9rem;
-    color: #101728;
-    font-size: clamp(0.92rem, 1.2vw, 1.08rem);
-    font-weight: 700;
-    line-height: 1.8;
-  }
-
-  .detail-link {
-    display: inline-flex;
-    gap: 0.65rem;
-    align-items: center;
-    color: #101728;
-    font-size: clamp(0.92rem, 1.15vw, 1.05rem);
-    font-weight: 700;
-    white-space: nowrap;
-  }
-
-  .detail-link span {
-    color: #1e63c6;
-    font-family: var(--font-handwriting);
-    font-size: 1.65rem;
-    font-weight: 400;
-    line-height: 1;
-    transition: transform 180ms ease;
-  }
-
-  .detail-link:hover span,
-  .detail-link:focus-visible span { transform: translateX(0.25rem); }
-
-  @media (max-width: 760px) {
-    .projects-intro { margin-left: 0; }
-    .project-record {
-      grid-template-columns: 1fr;
-      gap: 1rem 1.5rem;
-    }
-    .detail-link { justify-self: start; }
-  }
-
-  @media (max-width: 540px) {
-    .projects-page { width: min(100% - 1rem, 1320px); padding-inline: 1.25rem; }
-    .projects-intro p br { display: none; }
-    .project-archive { margin-top: 3.5rem; }
-    .project-record { grid-template-columns: 1fr; gap: 1rem; }
+  @media (max-width: 640px) {
+    .projects-page { width: min(100% - 1rem, 1500px); padding-inline: 1.25rem; }
+    .project-article { margin-top: 2.5rem; }
+    section { margin-top: 3.25rem; }
   }
 </style>
